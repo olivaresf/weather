@@ -11,7 +11,11 @@ import MapKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet var mapView: MKMapView!
+    @IBOutlet var mapView: MKMapView! {
+        didSet {
+            mapView.showsUserLocation = true
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,9 +46,12 @@ class ViewController: UIViewController {
         let tapPoint = mapView.convert(point, toCoordinateFrom: view)
         let latitude = Float(tapPoint.latitude)
         let longitude = Float(tapPoint.longitude)
+        
+        // Fetch the weather and add an annotation if successful.
         OpenWeather.getWeather(coordinate: (latitude: latitude, longitude: longitude)) { response in
             switch response {
             case .invalidData, .missingData, .networkError, .serverError:
+                // FIXME: We should probably show an alert here and split the errors into single cases.
                 print("Error fetching forecast: \(response)")
                 break
                 
@@ -61,6 +68,8 @@ class ViewController: UIViewController {
 
 extension ViewController : MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        // Ignore if the annotation is the user itself.
         guard !annotation.isKind(of: MKUserLocation.self) else { return nil }
         
         guard let weatherAnnotation = annotation as? WeatherAnnotation else { return nil }
@@ -71,6 +80,8 @@ extension ViewController : MKMapViewDelegate {
 
 extension ViewController : WeatherAnnotationViewDelegate {
     func userDidTap(view: WeatherAnnotationView) {
+        
+        // Present a detail screen when the user taps in our custom annotation.
         let detailVC = WeatherDetail.newFromStoryboard(weather: view.weatherData)
         let navController = UINavigationController(rootViewController: detailVC)
         present(navController, animated: true, completion: nil)

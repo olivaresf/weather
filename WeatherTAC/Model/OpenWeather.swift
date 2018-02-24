@@ -8,59 +8,9 @@
 
 import Foundation
 
-enum OpenWeatherResponse<T> {
-    case networkError(Error)
-    case serverError(HTTPCode)
-    case missingData
-    case invalidData(Data)
-    case success(T)
-}
-
-extension String : Error { }
-
-struct WeatherData {
-
-    let temperature: (min: String, current: String, max: String)
-    let forecast: String
-    let name: String
-    let image: URL
-    
-    init(data: Data) throws {
-        let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-        guard let jsonDictionary = json as? [String: Any] else { throw "Unexpected JSON" }
-        
-        guard
-            let temperatureDictionary = jsonDictionary["main"] as? [String: Float],
-            let minTemp = temperatureDictionary["temp_min"],
-            let currentTemp = temperatureDictionary["temp"],
-            let maxTemp = temperatureDictionary["temp_max"]
-        else {
-            throw "JSON does not contain temperature information"
-        }
-        
-        temperature = (min: String(format: "%.0f", minTemp),
-                       current: String(format: "%.0f", currentTemp),
-                       max: String(format: "%.0f", maxTemp))
-        
-        guard
-            let forecastDictionary = jsonDictionary["weather"] as? [[String: Any]],
-            let initialForecast = forecastDictionary.first,
-            let description = initialForecast["description"] as? String,
-            let icon = initialForecast["icon"] as? String else {
-                throw "JSON does not contain forecast information"
-        }
-        
-        forecast = description
-        image = URL(string: "http://openweathermap.org/img/w/\(icon).png")!
-        
-        guard let locationName = jsonDictionary["name"] as? String else {
-            throw "JSON does not contain location name"
-        }
-        
-        name = locationName
-    }
-}
-
+/// OpenWeather is our business logic class. This class doesn't technically deal with any networking code itself.
+/// This class is, instead, an abstraction of all the things that can happen right before and right after a networking call.
+/// It will make sure that the parameters for the call are all there before passing it along, and it will make sure that the response can be parsed.
 class OpenWeather {
     
     static let api = API()
@@ -85,3 +35,20 @@ class OpenWeather {
         }
     }
 }
+
+/// The response from querying the OpenWeather API can have different results.
+///
+/// - networkError: foundation URL class couldn't complete the call
+/// - serverError: the call could be completed, but the server returned an unexpected error (this can be a 4xx or 5xx error)
+/// - missingData: the call was completed with a correct HTTP code but data was not there when it was expected to be
+/// - invalidData: the call was completed with a correct HTTP code but data was invalid
+/// - success: the call was completed successfuly and the data parsed.
+enum OpenWeatherResponse<T> {
+    case networkError(Error)
+    case serverError(HTTPCode)
+    case missingData
+    case invalidData(Data)
+    case success(T)
+}
+
+extension String : Error { }
