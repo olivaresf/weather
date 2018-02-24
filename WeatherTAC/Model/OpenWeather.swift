@@ -20,7 +20,7 @@ extension String : Error { }
 
 struct WeatherData {
 
-    let temperature: (min: Float, current: Float, max: Float)
+    let temperature: (min: String, current: String, max: String)
     let forecast: String
     let name: String
     let image: URL
@@ -38,7 +38,9 @@ struct WeatherData {
             throw "JSON does not contain temperature information"
         }
         
-        temperature = (min: minTemp, current: currentTemp, max: maxTemp)
+        temperature = (min: String(format: "%.0f", minTemp),
+                       current: String(format: "%.0f", currentTemp),
+                       max: String(format: "%.0f", maxTemp))
         
         guard
             let forecastDictionary = jsonDictionary["weather"] as? [[String: Any]],

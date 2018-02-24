@@ -18,6 +18,7 @@
 		73F47FB22042086600AC55E9 /* WeatherAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F47FB12042086600AC55E9 /* WeatherAnnotation.swift */; };
 		73F47FB5204208A800AC55E9 /* WeatherAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F47FB4204208A800AC55E9 /* WeatherAnnotationView.swift */; };
 		73F47FB720420C8000AC55E9 /* WeatherAnnotationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F47FB620420C8000AC55E9 /* WeatherAnnotationView.xib */; };
+		73F47FBA2042171300AC55E9 /* WeatherDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F47FB92042171300AC55E9 /* WeatherDetail.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		73F47FB12042086600AC55E9 /* WeatherAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAnnotation.swift; sourceTree = "<group>"; };
 		73F47FB4204208A800AC55E9 /* WeatherAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAnnotationView.swift; sourceTree = "<group>"; };
 		73F47FB620420C8000AC55E9 /* WeatherAnnotationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WeatherAnnotationView.xib; sourceTree = "<group>"; };
+		73F47FB92042171300AC55E9 /* WeatherDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDetail.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,16 +69,14 @@
 			isa = PBXGroup;
 			children = (
 				73455B7F2041EB830094BA19 /* AppDelegate.swift */,
-				73455B812041EB830094BA19 /* ViewController.swift */,
+				73F47FBB20421DBF00AC55E9 /* Model */,
+				73F47FB82042170600AC55E9 /* ViewControllers */,
 				73F47FB32042089D00AC55E9 /* Views */,
 				73F47FB02042085700AC55E9 /* ViewModel */,
 				73455B832041EB830094BA19 /* Main.storyboard */,
-				73F47FAE2042069A00AC55E9 /* WeatherDetail.storyboard */,
 				73455B862041EB830094BA19 /* Assets.xcassets */,
 				73455B882041EB830094BA19 /* LaunchScreen.storyboard */,
 				73455B8B2041EB830094BA19 /* Info.plist */,
-				73455B912041F1610094BA19 /* API.swift */,
-				73455B932041F7F50094BA19 /* OpenWeather.swift */,
 			);
 			path = WeatherTAC;
 			sourceTree = "<group>";
@@ -96,6 +96,25 @@
 				73F47FB620420C8000AC55E9 /* WeatherAnnotationView.xib */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		73F47FB82042170600AC55E9 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				73455B812041EB830094BA19 /* ViewController.swift */,
+				73F47FB92042171300AC55E9 /* WeatherDetail.swift */,
+				73F47FAE2042069A00AC55E9 /* WeatherDetail.storyboard */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		73F47FBB20421DBF00AC55E9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				73455B932041F7F50094BA19 /* OpenWeather.swift */,
+				73455B912041F1610094BA19 /* API.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -174,6 +193,7 @@
 			files = (
 				73F47FB5204208A800AC55E9 /* WeatherAnnotationView.swift in Sources */,
 				73455B922041F1610094BA19 /* API.swift in Sources */,
+				73F47FBA2042171300AC55E9 /* WeatherDetail.swift in Sources */,
 				73455B822041EB830094BA19 /* ViewController.swift in Sources */,
 				73455B942041F7F50094BA19 /* OpenWeather.swift in Sources */,
 				73455B802041EB830094BA19 /* AppDelegate.swift in Sources */,
