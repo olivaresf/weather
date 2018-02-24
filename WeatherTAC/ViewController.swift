@@ -40,6 +40,18 @@ class ViewController: UIViewController {
     @objc func showWeather(_ tapGestureRecognizer: UITapGestureRecognizer) {
         let point = tapGestureRecognizer.location(in: mapView)
         let tapPoint = mapView.convert(point, toCoordinateFrom: view)
+        let latitude = Float(tapPoint.latitude)
+        let longitude = Float(tapPoint.longitude)
+        OpenWeather.getWeather(coordinate: (latitude: latitude, longitude: longitude)) { response in
+            switch response {
+            case .invalidData, .missingData, .networkError, .serverError:
+                print("Error fetching forecast: \(response)")
+                break
+                
+            case .success(let weatherData):
+                print("Forecast: \(weatherData.forecast)")
+            }
+        }
     }
 }
 

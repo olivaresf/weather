@@ -14,6 +14,8 @@ enum HTTPVerb: String {
 
 enum HTTPCode: Int {
     case OK = 200
+    case Unauthorized = 401
+    case ServerError = 500
 }
 
 enum APIEndpoint {
@@ -62,9 +64,10 @@ class API {
     func request(_ endpoint: APIEndpoint, completion: @escaping (APIResponse) -> ()) {
         
         let baseURL = "api.openweathermap.org"
-        let fullURL = URL(string: "https://" + baseURL + endpoint.url)!
+        let urlString = "https://\(baseURL)\(endpoint.url)&APPID=34309e034e2b1054ecfd7ee510b15b3b"
+        let fullURL = URL(string: urlString)!
         
-        API.session.dataTask(with: fullURL) { (possibleData, possibleResponse, possibleError) in
+        let dataTask = API.session.dataTask(with: fullURL) { (possibleData, possibleResponse, possibleError) in
             
             // Check for network errors.
             guard possibleError == nil else {
@@ -95,5 +98,7 @@ class API {
             
             completion(.success(data))
         }
+        
+        dataTask.resume()
     }
 }
