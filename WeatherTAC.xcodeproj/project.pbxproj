@@ -19,6 +19,7 @@
 		73F47FB5204208A800AC55E9 /* WeatherAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F47FB4204208A800AC55E9 /* WeatherAnnotationView.swift */; };
 		73F47FB720420C8000AC55E9 /* WeatherAnnotationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73F47FB620420C8000AC55E9 /* WeatherAnnotationView.xib */; };
 		73F47FBA2042171300AC55E9 /* WeatherDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F47FB92042171300AC55E9 /* WeatherDetail.swift */; };
+		73F47FBD20421F5900AC55E9 /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F47FBC20421F5900AC55E9 /* WeatherData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		73F47FB4204208A800AC55E9 /* WeatherAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAnnotationView.swift; sourceTree = "<group>"; };
 		73F47FB620420C8000AC55E9 /* WeatherAnnotationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WeatherAnnotationView.xib; sourceTree = "<group>"; };
 		73F47FB92042171300AC55E9 /* WeatherDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDetail.swift; sourceTree = "<group>"; };
+		73F47FBC20421F5900AC55E9 /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 			children = (
 				73455B932041F7F50094BA19 /* OpenWeather.swift */,
 				73455B912041F1610094BA19 /* API.swift */,
+				73F47FBC20421F5900AC55E9 /* WeatherData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -197,6 +200,7 @@
 				73455B822041EB830094BA19 /* ViewController.swift in Sources */,
 				73455B942041F7F50094BA19 /* OpenWeather.swift in Sources */,
 				73455B802041EB830094BA19 /* AppDelegate.swift in Sources */,
+				73F47FBD20421F5900AC55E9 /* WeatherData.swift in Sources */,
 				73F47FB22042086600AC55E9 /* WeatherAnnotation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

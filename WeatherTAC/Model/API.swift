@@ -8,16 +8,9 @@
 
 import Foundation
 
-enum HTTPVerb: String {
-    case GET
-}
-
-enum HTTPCode: Int {
-    case OK = 200
-    case Unauthorized = 401
-    case ServerError = 500
-}
-
+/// An APIEndpoint contains enough information to create a request and send it to OpenWeatherAPI
+///
+/// - weather: fetches the weather of a certain location.
 enum APIEndpoint {
     case weather(latitude: Float, longitude: Float)
     
@@ -46,6 +39,12 @@ enum APIEndpoint {
     }
 }
 
+/// This responses deal strictly with networking issues.
+///
+/// - networkError: foundation classes could not send the request
+/// - unexpectedHTTPCode: the call returned an unexpectedHTTPCode
+/// - expectedDataMissing: data was missing when it was expected
+/// - success: data received successfully
 enum APIResponse {
     case networkError(Error)
     case unexpectedHTTPCode(HTTPCode)
@@ -63,13 +62,14 @@ class API {
     
     func request(_ endpoint: APIEndpoint, completion: @escaping (APIResponse) -> ()) {
         
+        // FIXME: We should definitely move the baseURL away from here.
+        // However, due to time constraints, I'm leaivng it here.
         let baseURL = "api.openweathermap.org"
         let urlString = "https://\(baseURL)\(endpoint.url)&APPID=34309e034e2b1054ecfd7ee510b15b3b&units=imperial"
         let fullURL = URL(string: urlString)!
         
         let dataTask = API.session.dataTask(with: fullURL) { (possibleData, possibleResponse, possibleError) in
             
-            // Check for network errors.
             DispatchQueue.main.async {
             
                 guard possibleError == nil else {
@@ -77,7 +77,6 @@ class API {
                     return
                 }
                 
-                // Check for HTTP errors.
                 if let response = possibleResponse,
                     let httpResponse = response as? HTTPURLResponse,
                     let httpCodeResponse = HTTPCode(rawValue: httpResponse.statusCode){
@@ -104,4 +103,14 @@ class API {
         
         dataTask.resume()
     }
+}
+
+enum HTTPVerb: String {
+    case GET
+}
+
+enum HTTPCode: Int {
+    case OK = 200
+    case Unauthorized = 401
+    case ServerError = 500
 }

@@ -40,6 +40,9 @@ class WeatherDetail : UITableViewController {
         
         let text: String
         let detail: String
+        
+        // FIXME: Unfortunately, due to time constraints, I couldn't make this more modular.
+        // I'd love to create an enum and make this case exhaustive without a `default`.
         switch (indexPath.section, indexPath.row) {
         case (0, 0):
             detail = "Location"
