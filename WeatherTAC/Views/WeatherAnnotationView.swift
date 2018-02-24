@@ -9,14 +9,29 @@
 import Foundation
 import MapKit
 
+protocol WeatherAnnotationViewDelegate {
+    func userDidTap(view: WeatherAnnotationView)
+}
+
 class WeatherAnnotationView : MKAnnotationView {
-    init(annotation: WeatherAnnotation) {
+    
+    let delegate: WeatherAnnotationViewDelegate
+    let weatherData: WeatherData
+    
+    init(annotation: WeatherAnnotation, delegate: WeatherAnnotationViewDelegate) {
+        self.delegate = delegate
+        weatherData = annotation.data
+        
         super.init(annotation: annotation, reuseIdentifier: nil)
         
         canShowCallout = true
         rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
         
         guard let contentView = WeatherAnnotationViewContent.loadFromNib() else { return }
+        
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(didSelect))
+        contentView.addGestureRecognizer(recognizer)
+        
         contentView.frame = CGRect(x: -21, y: -45, width: 100, height: 80)
         contentView.weatherForecast.text = annotation.data.forecast
         contentView.weatherTemperature.text = "\(annotation.data.temperature.current)"
@@ -27,6 +42,31 @@ class WeatherAnnotationView : MKAnnotationView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let hitView = super.hitTest(point, with: event)
+        if hitView != nil {
+            superview?.bringSubview(toFront: self)
+        }
+
+        return hitView
+    }
+
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        var inside = !bounds.contains(point)
+        if !inside {
+            for view in subviews {
+                inside = view.frame.contains(point)
+                guard !inside else { return true }
+            }
+        }
+
+        return inside
+    }
+    
+    @objc func didSelect() {
+        delegate.userDidTap(view: self)
     }
 }
 

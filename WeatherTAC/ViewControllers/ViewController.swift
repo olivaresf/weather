@@ -65,6 +65,14 @@ extension ViewController : MKMapViewDelegate {
         
         guard let weatherAnnotation = annotation as? WeatherAnnotation else { return nil }
         
-        return WeatherAnnotationView(annotation: weatherAnnotation)
+        return WeatherAnnotationView(annotation: weatherAnnotation, delegate: self)
+    }
+}
+
+extension ViewController : WeatherAnnotationViewDelegate {
+    func userDidTap(view: WeatherAnnotationView) {
+        let detailVC = WeatherDetail.newFromStoryboard(weather: view.weatherData)
+        let navController = UINavigationController(rootViewController: detailVC)
+        present(navController, animated: true, completion: nil)
     }
 }
