@@ -22,6 +22,7 @@ struct WeatherData {
 
     let temperature: (min: Float, current: Float, max: Float)
     let forecast: String
+    let name: String
     let image: URL
     
     init(data: Data) throws {
@@ -49,6 +50,12 @@ struct WeatherData {
         
         forecast = description
         image = URL(string: "http://openweathermap.org/img/w/\(icon).png")!
+        
+        guard let locationName = jsonDictionary["name"] as? String else {
+            throw "JSON does not contain location name"
+        }
+        
+        name = locationName
     }
 }
 

@@ -17,7 +17,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         // As per the requirements:
-        // > A second screen which will be opened when the user double taps on a location
+        // > A second screen which will be opened when the user double-taps on a location
         // Since the mapview already has double-tap enabled to zoom in, we'll disable it first and then add our own double tap gesture.
         if let mapViewWithGestureRecognizers = mapView.subviews.first,
             let mapGestureRecognizers = mapViewWithGestureRecognizers.gestureRecognizers {
@@ -49,12 +49,22 @@ class ViewController: UIViewController {
                 break
                 
             case .success(let weatherData):
-                print("Forecast: \(weatherData.forecast)")
+
+                // Add a new annotation representing this area.
+                let annotation = WeatherAnnotation(data: weatherData)
+                annotation.coordinate = tapPoint
+                self.mapView.addAnnotation(annotation)
             }
         }
     }
 }
 
 extension ViewController : MKMapViewDelegate {
-    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        guard !annotation.isKind(of: MKUserLocation.self) else { return nil }
+        
+        guard let weatherAnnotation = annotation as? WeatherAnnotation else { return nil }
+        
+        return WeatherAnnotationView(annotation: weatherAnnotation)
+    }
 }

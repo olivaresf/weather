@@ -64,39 +64,42 @@ class API {
     func request(_ endpoint: APIEndpoint, completion: @escaping (APIResponse) -> ()) {
         
         let baseURL = "api.openweathermap.org"
-        let urlString = "https://\(baseURL)\(endpoint.url)&APPID=34309e034e2b1054ecfd7ee510b15b3b"
+        let urlString = "https://\(baseURL)\(endpoint.url)&APPID=34309e034e2b1054ecfd7ee510b15b3b&units=imperial"
         let fullURL = URL(string: urlString)!
         
         let dataTask = API.session.dataTask(with: fullURL) { (possibleData, possibleResponse, possibleError) in
             
             // Check for network errors.
-            guard possibleError == nil else {
-                completion(.networkError(possibleError!))
-                return
-            }
+            DispatchQueue.main.async {
             
-            // Check for HTTP errors.
-            if let response = possibleResponse,
-                let httpResponse = response as? HTTPURLResponse,
-                let httpCodeResponse = HTTPCode(rawValue: httpResponse.statusCode){
-                
-                guard endpoint.allowedHTTPCodes.contains(httpCodeResponse) else {
-                    completion(.unexpectedHTTPCode(httpCodeResponse))
+                guard possibleError == nil else {
+                    completion(.networkError(possibleError!))
                     return
                 }
+                
+                // Check for HTTP errors.
+                if let response = possibleResponse,
+                    let httpResponse = response as? HTTPURLResponse,
+                    let httpCodeResponse = HTTPCode(rawValue: httpResponse.statusCode){
+                    
+                    guard endpoint.allowedHTTPCodes.contains(httpCodeResponse) else {
+                        completion(.unexpectedHTTPCode(httpCodeResponse))
+                        return
+                    }
+                }
+                
+                guard endpoint.expectsData else {
+                    completion(.success(Data()))
+                    return
+                }
+                
+                guard let data = possibleData else {
+                    completion(.expectedDataMissing)
+                    return
+                }
+                
+                completion(.success(data))
             }
-            
-            guard endpoint.expectsData else {
-                completion(.success(Data()))
-                return
-            }
-            
-            guard let data = possibleData else {
-                completion(.expectedDataMissing)
-                return
-            }
-            
-            completion(.success(data))
         }
         
         dataTask.resume()
