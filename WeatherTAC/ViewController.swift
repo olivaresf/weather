@@ -38,7 +38,8 @@ class ViewController: UIViewController {
     }
     
     @objc func showWeather(_ tapGestureRecognizer: UITapGestureRecognizer) {
-        print("double tap")
+        let point = tapGestureRecognizer.location(in: mapView)
+        let tapPoint = mapView.convert(point, toCoordinateFrom: view)
     }
 }
 
